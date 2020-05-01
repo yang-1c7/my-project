@@ -1,0 +1,250 @@
+﻿<!doctype html>
+<html>
+ 
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title>Map</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+ 
+    .gm-style div div div div div div:last-child {
+      
+    }
+ 
+    .gm-style div div div div div div:nth-child(2) {
+      background-color: rgba(0, 0, 0, 0) !important;
+      box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px !important;
+    }
+ 
+    .gm-style .gm-style-iw .marker-container {
+      width: 200px;
+      height: 250px;
+      background-color: rgba(28, 40, 52, .6) !important;
+      z-index: 1000000;
+      color: #00a2ff;
+     
+      position: relative;
+    }
+    .gm-style-iw-d {
+       background-color:#FFFFFF;
+	   
+	  
+    }
+    .gm-style-iw-t:after {
+     
+    }
+    .marker {
+      width: 90%;
+      height: 45%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 5%;
+      /* background: url('./img/house.jpg'); */
+      background-color: white;
+    }
+ 
+    .detail-info {
+      width: 100%;
+      position: relative;
+      left: -10%;
+      
+      top: 55%;
+    }
+ 
+    .detail-info p {
+      margin: 0;
+      margin-bottom: 15px;
+    }
+ 
+    .detail-info span {
+      display: block;
+    }
+ 
+    .statusAddress div {
+      float: left;
+      width: 50%;
+    }
+ 
+    .lastTime,
+    .statusAddress {
+      font-size: 10px;
+    }
+ 
+    .detail-info span:last-child {
+      color: rgba(255, 255, 255, .5);
+    }
+  </style>
+</head>
+ 
+<body>
+  <div id="map" style="width:100%;height:100%"></div>
+
+ 
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRoi10OVZocb_bSsHB1qqoF4bR_ldZ-mk&language=en"></script> -->
+  <script>
+    var mapType = google.maps.MapTypeId.ROADMAP;
+    var lat = 43.595310,
+      lng = -79.640579,
+	  lat1 = 43.65107,
+      lng1 = -79.374,
+	  lat2 = 42.31743,
+      lng2 = -83.0268,
+	  lat3 = 42.983612,
+      lng3 = -81.249725,
+      zoom = 10;
+
+    
+    var mapOptions = {
+      center: {
+        lat: 42.3149,
+        lng: -83.0364
+      },
+      zoom: 8, 
+	  
+    }
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions); //创建谷歌地图
+   
+ 
+    function HouseMarker(latlng, map, args) {
+      this.latlng = latlng; //for google map
+      this.prototype.setMap(map); //for google map
+      // this.map = map,
+      this.args = args; //自定义参数
+    }
+    HouseMarker.prototype = google.maps.OverlayView;
+	HouseMarker.prototype.draw = function() {
+      //创建一个div，把marker和详情框写在一起，方便后面的展示和隐藏
+       $div = $("<div class='marker-container'>" +
+        　　　　　　　　"　　<div class='marker'></div>" +
+        　　　　　　　　"　　<div class='detail-info'>hihi</div>" +
+        　　　　　　　　"</div>");
+      //将div添加到它的dom元素里面
+      var panes = this.getPanes();
+      var div = $div[0];
+      panes.overlayImage.appendChild(div);
+      //根据经纬度计算div的像素位置
+      var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+      div.style.left = (point.x - 20) + 'px';    //减掉marker宽度的一半，居中
+      div.style.top = (point.y - 20) + 'px';    //减掉marker高度的一半，居中
+    };
+    // var locationMarker = {
+    //   path: './img/green.svg'
+    // }
+    var marker1 = new google.maps.Marker({
+      map: map,
+      // icon: './img/green.svg',
+      position: new google.maps.LatLng(lat, lng)
+    });
+    var infowindow1 = new google.maps.InfoWindow({ content: "@ctic_ca   Apr 01 13:01:24 EDT 2020 Mississauga"  + '</br>' + "Canada’s largest real estate market “hit the brakes” in the last full week of March as sales plunged and sellers pulled listings in the face of the COVID-19 crisis, according to a Toronto-based realtor"}); //创建一个InfoWindow
+   
+    //使用谷歌地图定义的事件，给这个marker添加点击事件
+    google.maps.event.addListener(marker1, "click", function () {
+      infowindow1.open(map, marker1);
+    });
+	
+	HouseMarker.prototype.draw = function() {
+      //创建一个div，把marker和详情框写在一起，方便后面的展示和隐藏
+      $div = $("<div class='marker-container'>" +
+        　　　　　　　　"　　<div class='marker'></div>" +
+        　　　　　　　　"　　<div class='detail-info'>hihi</div>" +
+        　　　　　　　　"</div>");
+      //将div添加到它的dom元素里面
+      var panes = this.getPanes();
+      var div = $div[0];
+      panes.overlayImage.appendChild(div);
+      //根据经纬度计算div的像素位置
+      var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+      div.style.left = (point.x - 20) + 'px';    //减掉marker宽度的一半，居中
+      div.style.top = (point.y - 20) + 'px';    //减掉marker高度的一半，居中
+    };
+    // var locationMarker = {
+    //   path: './img/green.svg'
+    // }
+    var marker2 = new google.maps.Marker({
+      map: map,
+      // icon: './img/green.svg',
+      position: new google.maps.LatLng(lat1, lng1)
+    });
+    var infowindow2 = new google.maps.InfoWindow({ content: "@TorontoPearson   Mar 31 14:48:01 EDT 2020 Toronto"  + '</br>' + "We continue to offer food and beverage options to our passengers, but changes have been made in response to COVID-19. Some shops and restaurants have reduced hours, closed temporarily or switched to take out only" + '</br>' + "@OpenArchToronto  Mar 31 14:47:49 EDT 2020 Toronto" + '</br>' + "In the light of the current perturbing situation revolving around COVID-19, we at Open Architecture Toronto advocate for empathy towards one another and staying vigilant and cautious, hoping to get through these"}); //创建一个InfoWindow
+   
+    //使用谷歌地图定义的事件，给这个marker添加点击事件
+    google.maps.event.addListener(marker2, "click", function () {
+      infowindow2.open(map, marker2);
+    });
+	
+	HouseMarker.prototype.draw = function() {
+      //创建一个div，把marker和详情框写在一起，方便后面的展示和隐藏
+      $div = $("<div class='marker-container'>" +
+        　　　　　　　　"　　<div class='marker'></div>" +
+        　　　　　　　　"　　<div class='detail-info'>hihi</div>" +
+        　　　　　　　　"</div>");
+      //将div添加到它的dom元素里面
+      var panes = this.getPanes();
+      var div = $div[0];
+      panes.overlayImage.appendChild(div);
+      //根据经纬度计算div的像素位置
+      var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+      div.style.left = (point.x - 20) + 'px';    //减掉marker宽度的一半，居中
+      div.style.top = (point.y - 20) + 'px';    //减掉marker高度的一半，居中
+    };
+    // var locationMarker = {
+    //   path: './img/green.svg'
+    // }
+    var marker3 = new google.maps.Marker({
+      map: map,
+      // icon: './img/green.svg',
+      position: new google.maps.LatLng(lat2, lng2)
+    });
+    var infowindow3 = new google.maps.InfoWindow({content: "@BlackburnEssex  Mar 31 13:10:00 EDT 2020 Windsor" + '</br>' + "Aphria and Double Diamond Farms in Leamington has made a significant contribution to a fund to help healthcare workers at Erie Shores Healthcare" + '</br>' + "@AM800News  Mar 31 11:45:05 EDT 2020 Windsor" + '</br>' + "21 new confirmed cases of COVID-19 in Windsor-Essex"}); //创建一个InfoWindow
+   
+    //使用谷歌地图定义的事件，给这个marker添加点击事件
+    google.maps.event.addListener(marker3, "click", function() {
+      infowindow3.open(map, marker3);
+    });
+	
+	HouseMarker.prototype.draw = function() {
+      //创建一个div，把marker和详情框写在一起，方便后面的展示和隐藏
+       $div = $("<div class='marker-container'>" +
+        　　　　　　　　"　　<div class='marker'></div>" +
+        　　　　　　　　"　　<div class='detail-info'>hihi</div>" +
+        　　　　　　　　"</div>");
+      //将div添加到它的dom元素里面
+      var panes = this.getPanes();
+      var div = $div[0];
+      panes.overlayImage.appendChild(div);
+      //根据经纬度计算div的像素位置
+      var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+      div.style.left = (point.x - 20) + 'px';    //减掉marker宽度的一半，居中
+      div.style.top = (point.y - 20) + 'px';    //减掉marker高度的一半，居中
+    };
+    // var locationMarker = {
+    //   path: './img/green.svg'
+    // }
+    var marker4 = new google.maps.Marker({
+      map: map,
+      // icon: './img/green.svg',
+      position: new google.maps.LatLng(lat3, lng3)
+    });
+    var infowindow4 = new google.maps.InfoWindow({ content: "@crashologist  Mar 31 18:11:31 EDT 2020 London" + '</br>' + "COVID-19 Virus Effects on Traffic on Clarke Road in London" + '</br>' + "@UnityProjectLdn  Mar 31 19:06:59 EDT 2020 London" + '</br>' + "COVID has underlined how income+housing are social determinants of health" }); //创建一个InfoWindow
+    
+    //使用谷歌地图定义的事件，给这个marker添加点击事件
+    google.maps.event.addListener(marker4, "click", function() {
+      infowindow4.open(map, marker4);
+    });
+	
+   
+	
+  
+  </script>
+</body>
+ 
+</html>
